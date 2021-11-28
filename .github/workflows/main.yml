@@ -26,7 +26,7 @@ jobs:
         uses: Azure/aml-workspace@v1
         with:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          parameters_file: "alternate_workspace.json"
+          parameters_file: "workspace.json"
 
 
       
