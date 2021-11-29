@@ -48,7 +48,7 @@ jobs:
         run: |
           python 01_DataProcessing.py
         env:
-          ROOT_DIR=root
+          ROOT_DIR:root
 
 
       
