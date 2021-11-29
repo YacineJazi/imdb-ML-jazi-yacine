@@ -28,9 +28,11 @@ jobs:
           python-version: 3.6
       - name: "install azure-cli"
         run: | 
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          sudo apt-get update
-          sudo apt-get install azure-cli
+          sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev
+          echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/azure-cli/ wheezy main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+          sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+          sudo apt-get install -y apt-transport-https
+          sudo apt-get -y update && sudo apt-get install -y azure-cli
 
       - name: "install dependencies"
         run: |
