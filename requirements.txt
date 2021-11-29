@@ -4,6 +4,7 @@ setuptools==57.5.0
 matplotlib
 python-dotenv
 azureml-sdk
+azure-cli-core
 azureml-core
 dotnetcore2
 azureml-dataset-runtime
