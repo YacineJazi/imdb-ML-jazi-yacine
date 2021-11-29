@@ -3,6 +3,7 @@ scikit-learn==0.22.1
 setuptools==57.5.0
 matplotlib
 python-dotenv
+azureml-sdk
 azureml-core
 dotnetcore2
 azureml-dataset-runtime
