@@ -6,3 +6,4 @@ python-dotenv
 azureml-core
 azure-cli
 dotnetcore2
+azureml-dataset-runtime
