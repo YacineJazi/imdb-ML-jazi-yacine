@@ -140,4 +140,4 @@ cython_debug/
 
 #Files
 *.npy
-*config.json
+**/config.json
