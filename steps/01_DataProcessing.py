@@ -18,29 +18,33 @@ load_dotenv()
 
 
 def main():
-    cli_auth = AzureCliAuthentication()
-
+    #cli_auth = AzureCliAuthentication()
+    #Get env variables
     workspace_name = os.environ.get("WORKSPACE_NAME")
     resource_group = os.environ.get("RESOURCE_GROUP")
     subscription_id = os.environ.get("SUBSCRIPTION_ID")
-
+    #Create folder if not exist
     train_test_data_folder = os.path.join(os.environ.get('ROOT_DIR'), 'data/tmp/train_test_data')
     os.makedirs(train_test_data_folder, exist_ok=True)
 
-
+    #Connect to workspace
     ws = Workspace.get(
         name=workspace_name,
         subscription_id=subscription_id,
         resource_group=resource_group,
-        auth=None
     )
+    #Get data from datastore
     datastore = Datastore(ws)
     dataset = Dataset.get_by_name(ws, name='ratings')
     dataset = dataset.to_pandas_dataframe()
+
+    #Preprocess data
     dataset= formatData(dataset)
     dataset_train,dataset_test = splitData(dataset)
     saveNumpyArrays(train_test_data_folder, dataset_train=dataset_train, dataset_test=dataset_test)
-    datastore.upload(src_dir=train_test_data_folder, target_path='imdb_train_test')
+
+    #Upload to datastore
+    datastore.upload(src_dir=train_test_data_folder, target_path='imdb_train_test',overwrite=True)
     train_test_data = Dataset.File.from_files([(datastore, 'imdb_train_test')],validate=False)
     train_test_data.register(
     workspace=ws,
@@ -49,6 +53,7 @@ def main():
     create_new_version=True
     )
 
+#Format data for consumption
 def formatData(dataset):
     dataset= dataset.rename({"Column1": "reviewer", "Column2": "movie", "Column3": "score"},axis="columns")
     dataset= dataset.pivot(index="reviewer",columns="movie",values="score").fillna(0).astype(int)
@@ -61,6 +66,7 @@ def formatData(dataset):
     dataset.add_prefix('movie')
     return dataset
 
+#Split data in training- and testset
 def splitData(dataset):
     dataset_test = dataset 
     dataset_train = dataset
@@ -71,6 +77,7 @@ def splitData(dataset):
             dataset_train.iat[index-1,non_null[i]]=0
     return dataset_train.div(5),dataset_test.div(5)
 
+#Save training- and testset as .npy files for upload to datastore
 def saveNumpyArrays(folder, **arrays):
     for array_name, array in arrays.items():
         np.save(f"{folder}/{array_name}.npy", array)
