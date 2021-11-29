@@ -32,8 +32,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
       - name: "install azure-cli"
-          run: | 
-            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        run: | 
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 
       - name: "Azure login"  
