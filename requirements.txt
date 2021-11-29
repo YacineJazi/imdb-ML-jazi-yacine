@@ -8,3 +8,4 @@ azure-cli-core
 azureml-core
 dotnetcore2
 azureml-dataset-runtime
+azureml-dataprep[pandas]
