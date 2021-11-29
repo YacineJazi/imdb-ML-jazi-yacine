@@ -47,6 +47,8 @@ jobs:
         working-directory: "steps"
         run: |
           python 01_DataProcessing.py
+        env:
+          ROOT_DIR=root
 
 
       
