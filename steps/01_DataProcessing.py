@@ -18,7 +18,7 @@ load_dotenv()
 
 
 def main():
-    #cli_auth = AzureCliAuthentication()
+    cli_auth = AzureCliAuthentication()
     #Get env variables
     workspace_name = os.environ.get("WORKSPACE_NAME")
     resource_group = os.environ.get("RESOURCE_GROUP")
@@ -32,6 +32,7 @@ def main():
         name=workspace_name,
         subscription_id=subscription_id,
         resource_group=resource_group,
+        auth=cli_auth
     )
     #Get data from datastore
     datastore = Datastore(ws)
