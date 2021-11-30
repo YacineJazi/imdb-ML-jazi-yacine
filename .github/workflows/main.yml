@@ -56,6 +56,11 @@ jobs:
         working-directory: "steps"
         run: |
           python 01_DataProcessing.py
+      
+      - name: "Training model"
+        working-directory: "steps"
+        run: |
+          python 02_TrainModel.py
         
 
 
