@@ -140,5 +140,5 @@ cython_debug/
 
 #Files
 *.npy
-**/config.json
+**/*.json
 **/states

@@ -1,22 +1,15 @@
 import argparse
 import os
 from glob import glob
-import math
+
 import numpy as np
 import pandas as pd
-from azureml.core import Dataset, Datastore, Experiment, Run, Workspace
-from azureml.core.authentication import AzureCliAuthentication
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from azureml.core import Run
 import tensorflow as tf
-from tensorflow.keras.models import Model
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation,InputLayer,Reshape,Lambda
-from tensorflow.keras.layers import Input, Dense, Dropout, Flatten, BatchNormalization,concatenate
-from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D, Conv2DTranspose
+from tensorflow.keras.layers import InputLayer
+from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import backend as K
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras import regularizers
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data-folder', type=str, dest='data_folder', help='Test data folder mounting point')
@@ -64,6 +57,7 @@ early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', p
 reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
 
 autoencoder.compile(loss=custom_loss, optimizer='adam')
+
 autoencoder.fit(np.array(dataset_train),
                 np.array(dataset_train),
                 validation_split=0.2,

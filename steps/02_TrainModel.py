@@ -24,6 +24,7 @@ from azureml.core.compute import AmlCompute
 from azureml.core.compute import ComputeTarget
 import os
 
+load_dotenv()
 
 def main():
     cli_auth = AzureCliAuthentication()
@@ -54,20 +55,19 @@ def main():
     compute_target = prepareMachines(ws)
     env = prepareEnv(ws, env_name)
     src = prepareTraining(dataset, model_name, script_folder, compute_target, env)
+
     exp = Experiment(workspace=ws, name=experiment_name)
     run = exp.submit(config=src)
     run.wait_for_completion()
+    
     run_details = {k:v for k,v in run.get_details().items() if k not in ['inputDatasets', 'outputDatasets']}
     
-    if not os.path.exists(os.path.dirname(config_state_folder)):
-        try:
-            os.makedirs(os.path.dirname(config_state_folder))
-        except OSError as exc: # Guard against race condition
-            raise
-
-
-    with open('filename', 'w') as training_run_json:
+    if not os.path.exists(config_state_folder):
+        os.makedirs(config_state_folder)
+        
+    with open(config_state_folder + '/training-run.json', 'w+') as training_run_json:
         json.dump(run_details, training_run_json)
+
     
     
 
@@ -114,3 +114,6 @@ def prepareEnv(ws, env_name):
     # Register environment to re-use later
     env.register(workspace = ws)
     return env
+
+if __name__ == '__main__':
+    main()

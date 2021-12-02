@@ -66,6 +66,11 @@ jobs:
         working-directory: "steps"
         run: |
           python 03_RegisterModel.py
+          
+      - name: "Deploy model"
+        working-directory: "steps"
+        run: |
+          python 04_DeployModel.py
         
 
 

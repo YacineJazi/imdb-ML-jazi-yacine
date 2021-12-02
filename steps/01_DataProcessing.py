@@ -16,7 +16,6 @@ runtime.version = ("18", "10", "0")
 
 load_dotenv()
 
-
 def main():
     cli_auth = AzureCliAuthentication()
     #Get env variables

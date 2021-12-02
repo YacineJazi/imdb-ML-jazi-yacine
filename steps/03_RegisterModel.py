@@ -53,8 +53,9 @@ def main():
     model_json["model"] = model.serialize()
     model_json["run"] = config
 
-    print(model_json)
-
+    if not os.path.exists(config_state_folder):
+        os.makedirs(config_state_folder)
+        
     with open(config_state_folder + "/model_details.json", "w") as model_details:
         json.dump(model_json, model_details)
 
