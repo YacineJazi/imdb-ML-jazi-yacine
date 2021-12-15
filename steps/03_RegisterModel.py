@@ -20,7 +20,7 @@ def getConfiguration(details_file):
     return config
 
 def registerModel(model_name, description, run):
-
+    #register model
     model = run.register_model(model_name=model_name, model_path=f'outputs/{model_name}', tags={"runId": run.id}, description=description)
     print("Model registered: {} \nModel Description: {} \nModel Version: {}".format(model.name, model.description, model.version))
 
@@ -28,7 +28,7 @@ def registerModel(model_name, description, run):
 
 def main():
     cli_auth = AzureCliAuthentication()
-
+    #Get environment variables
     workspace_name = os.environ.get("WORKSPACE_NAME")
     resource_group = os.environ.get("RESOURCE_GROUP")
     subscription_id = os.environ.get("SUBSCRIPTION_ID")
@@ -37,18 +37,22 @@ def main():
     experiment_name = os.environ.get("EXPERIMENT_NAME")
     config_state_folder = os.path.join(os.environ.get("ROOT_DIR"), 'config_states')
 
+    #Get workspace
     ws = Workspace.get(
         name=workspace_name,
         subscription_id=subscription_id,
         resource_group=resource_group,
         auth=cli_auth
     )
-
+    #Get Configuration
     config = getConfiguration(config_state_folder + "/training-run.json")
+
+    #Create Experiment and Run
     exp = Experiment(workspace=ws, name=experiment_name)
     run = Run(experiment=exp, run_id=config['runId'])
     model = registerModel(model_name, model_description, run)
 
+    #Create json of model
     model_json = {}
     model_json["model"] = model.serialize()
     model_json["run"] = config

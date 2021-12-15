@@ -48,7 +48,6 @@ autoencoder.summary()
 
 
 # Training the autoencoder with a custom loss function
-
 def custom_loss(y_true,y_pred):
     y_mask=tf.keras.backend.clip(y_true, 0, 0.01)*100
     return K.mean(K.square(y_mask*(y_pred - y_true)), axis=-1)

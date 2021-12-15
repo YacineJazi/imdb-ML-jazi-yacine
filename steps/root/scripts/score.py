@@ -12,13 +12,9 @@ def custom_loss(y_true,y_pred):
 
 def init():
     global model
-    # AZUREML_MODEL_DIR is an environment variable created during deployment.
-    # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
-    # For multiple models, it points to the folder containing all deployed models (./azureml-models)
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'),'imdb_model')
     model = load_model(model_path,custom_objects={'custom_loss': custom_loss})
 
-#!!Preprocess here!!
 def run(data):
     try:
         print(model)
@@ -29,5 +25,3 @@ def run(data):
     except Exception as e:
         result = str(e)
         return {"error": e}
-
-#
